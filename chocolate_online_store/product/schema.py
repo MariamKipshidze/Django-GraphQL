@@ -1,12 +1,18 @@
 import graphene
 from graphene_django import DjangoObjectType
 
-from product.models import Product
+from product.models import Product, Category
 
 
 class ProductType(DjangoObjectType):
     class Meta:
         model = Product
+        fields = ('id', 'title')
+
+
+class CategoryType(DjangoObjectType):
+    class Meta:
+        model = Category
         fields = ('id', 'title')
 
 
