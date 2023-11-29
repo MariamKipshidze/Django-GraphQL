@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'graphene_django',
     'django_filters',
     'ckeditor',
+    'ckeditor_uploader',
 
     # -- Custom apps
     'product',
