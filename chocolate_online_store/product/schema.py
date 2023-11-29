@@ -7,7 +7,7 @@ from product.models import Product, Category
 class ProductType(DjangoObjectType):
     class Meta:
         model = Product
-        fields = ('id', 'title')
+        fields = ('id', 'category', 'title', 'ingredients', 'price')
 
 
 class CategoryType(DjangoObjectType):
