@@ -1,3 +1,4 @@
 Django==4.2.7
 graphene-django==3.1.5
 django-filter==23.4
+django-ckeditor==6.7.0
