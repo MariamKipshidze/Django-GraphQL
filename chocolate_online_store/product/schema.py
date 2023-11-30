@@ -19,6 +19,7 @@ class CategoryType(DjangoObjectType):
 class Query(graphene.ObjectType):
     all_products = DjangoListField(ProductType)
     all_categories = graphene.List(CategoryType)
+    get_product = graphene.Field(ProductType, product_id=graphene.Int())
 
     @staticmethod
     def resolve_all_products(*_, **__):
@@ -27,6 +28,9 @@ class Query(graphene.ObjectType):
     @staticmethod
     def resolve_all_categories(*_, **__):
         return Category.objects.all()
+
+    def resolve_get_product(self, _, product_id: int):
+        return Product.objects.get(pk=product_id)
 
 
 schema = graphene.Schema(query=Query)
