@@ -1,5 +1,5 @@
 import graphene
-from graphene_django import DjangoObjectType
+from graphene_django import DjangoObjectType, DjangoListField
 
 from product.models import Product, Category
 
@@ -17,7 +17,7 @@ class CategoryType(DjangoObjectType):
 
 
 class Query(graphene.ObjectType):
-    all_products = graphene.List(ProductType)
+    all_products = DjangoListField(ProductType)
     all_categories = graphene.List(CategoryType)
 
     @staticmethod
