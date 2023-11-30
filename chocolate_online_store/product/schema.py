@@ -18,10 +18,15 @@ class CategoryType(DjangoObjectType):
 
 class Query(graphene.ObjectType):
     all_products = graphene.List(ProductType)
+    all_categories = graphene.List(CategoryType)
 
     @staticmethod
     def resolve_all_products(*_, **__):
         return Product.objects.all()
+
+    @staticmethod
+    def resolve_all_categories(*_, **__):
+        return Category.objects.all()
 
 
 schema = graphene.Schema(query=Query)
