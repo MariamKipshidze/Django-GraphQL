@@ -75,6 +75,8 @@ class CategoryMutation(graphene.Mutation):
             if category:
                 category.title = title
                 category.save()
+                # if we need to delete
+                # category.delete()
             else:
                 raise ObjectDoesNotExist
         return CategoryMutation(category=category)
