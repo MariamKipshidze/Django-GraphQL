@@ -57,4 +57,31 @@ class Query(graphene.ObjectType):
         return Product.objects.get(pk=product_id)
 
 
-schema = graphene.Schema(query=Query)
+class CategoryMutation(graphene.Mutation):
+    class Arguments:
+        title = graphene.String(required=True)
+
+    category = graphene.Field(CategoryType)
+
+    @classmethod
+    def mutate(cls, _, __, title: str):
+        category = Category(title=title)
+        category.save()
+        return CategoryMutation(category=category)
+
+
+class Mutation(graphene.ObjectType):
+    """
+       Request Format - creating category object:
+       mutation {
+          updateCategory(title: "new category"){
+            category{
+              title
+                }
+            }
+        }
+    """
+    update_category = CategoryMutation.Field()
+
+
+schema = graphene.Schema(query=Query, mutation=Mutation)
