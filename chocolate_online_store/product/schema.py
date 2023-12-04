@@ -1,4 +1,5 @@
 import graphene
+from django.core.exceptions import ObjectDoesNotExist
 from graphene_django import DjangoObjectType, DjangoListField
 
 from product.models import Product, Category
@@ -59,14 +60,23 @@ class Query(graphene.ObjectType):
 
 class CategoryMutation(graphene.Mutation):
     class Arguments:
+        category_id = graphene.ID(required=False)
         title = graphene.String(required=True)
 
     category = graphene.Field(CategoryType)
 
     @classmethod
-    def mutate(cls, _, __, title: str):
-        category = Category(title=title)
-        category.save()
+    def mutate(cls, _, __, title: str, category_id: int = None):
+        if not category_id:
+            category = Category(title=title)
+            category.save()
+        else:
+            category = Category.objects.filter(id=category_id).first()
+            if category:
+                category.title = title
+                category.save()
+            else:
+                raise ObjectDoesNotExist
         return CategoryMutation(category=category)
 
 
@@ -79,6 +89,15 @@ class Mutation(graphene.ObjectType):
               title
                 }
             }
+        }
+
+       Request Format - updating category object:
+       mutation {
+          updateCategory(title: "category 6", categoryId: 6){
+            category{
+              title
+                }
+             }
         }
     """
     update_category = CategoryMutation.Field()
